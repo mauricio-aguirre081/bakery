@@ -1,4 +1,45 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+
+const ItemCount = ({ initial, stock }) => {
+    const [count, setCount] = useState(initial);
+
+    const add = () => {
+        stock !== count && setCount(count + 1);
+    };
+
+    const substract = () => {
+        initial !== count && setCount(count - 1);
+    };
+    return (
+        <div className="count">
+            <div className="buttons">
+                <button onClick={add}>+</button>
+                <p>{count}</p>
+                <button onClick={substract}>-</button>
+            </div>
+            <div className="add-cart">
+                <button>Add to Cart!</button>
+            </div>
+        </div>
+    );
+};
+
+export default ItemCount;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* import React, { useEffect, useState } from 'react';
 
 export const ItemCount = ({ initial, stock, onAdd }) => {
     const [count, setCount] = useState(parseInt(initial));
@@ -28,4 +69,4 @@ export const ItemCount = ({ initial, stock, onAdd }) => {
     );
 }
 
-export default ItemCount;
+export default ItemCount; */

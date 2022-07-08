@@ -1,39 +1,43 @@
+
 import React, { useEffect, useState } from 'react';
+import ItemList from '../ItemList/ItemList';
+import { getProds } from '../../mocks/FakeApi';
+import { useParams } from 'react-router-dom';
 
-import ItemCount from '../ItemCount';
-import ItemList from '../ItemList';
+const ItemListContainer = () => {
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-const prods = [
-    { id: 1, image: "#", title: "Pan" },
-    { id: 2, image: "#", title: "Pan Casero" },
-    { id: 3, image: "#", title: "Pan Salvado" },
-    { id: 3, image: "#", title: "Facturas" },
-];
-
-export const ItemListContainer = ({ texto }) => {
-    const [data, setData] = useState([]);
+    const { categoryId } = useParams();
 
     useEffect(() => {
-        const getData = new Promise(resolve => {
-            setTimeout(() => {
-                resolve(prods);
-            }, 3000);
-        });
-        getData.then(res => setData(res));
+        setLoading(true);
+
+        getProds(categoryId)
+            .then((res) => {
+                setProducts(res);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+
+        }, [categoryId ]);
 
 
-    }, [])
-
-    const onAdd = (quantity) => {
-        console.log(`Compra ${quantity} unidades`);
-    }
-
-    return (
-        <>
-            <ItemCount initial={3} stock={5} onAdd={onAdd} />
-            <ItemList data={data} />
-        </>
-    );
-}
-
-export default ItemListContainer;
+        return (
+            <div>
+                {loading ? (
+                    <h2>Cargando...</h2>
+                ) : (
+                    <>
+                        <ItemList items={products} />
+                    </>
+                )}
+            </div>
+        );
+    };
+    
+    export default ItemListContainer;

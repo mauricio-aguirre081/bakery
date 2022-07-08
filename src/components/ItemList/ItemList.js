@@ -1,10 +1,23 @@
-import Item from '../Item';
 import React from 'react';
+import Item from '../Item/Item';
 
-const ItemList = ({ data = [] }) => {
+const ItemList = ({ items }) => {
     return (
-        data.map(prod => <Item key={prod.id} info={prod} />)
+        <>
+            <div
+                style={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    maxWidth: '80%',
+                    margin: '0 auto',
+                }}
+            >
+                {items.map((item) => (
+                    <Item key={item.id} item={item} />
+                ))}
+            </div>
+        </>
     );
-}
+};
 
 export default ItemList;

@@ -1,22 +1,20 @@
-import React from "react";
-import { Link } from "react-router-dom";
+
+import React from 'react';
+import ItemCount from '../ItemCount/ItemCount';
 
 const ItemDetail = ({ product }) => {
-  return (
-    <div >
-      <img src={product.image} alt={product.title} />
-      <div >
-        <div>
-          <h1>{product.title}</h1>
-          <span>${product.price}</span>
-          <p>{product.description}</p>
+    return (
+        <div className="detail">
+            <img src={product.image} alt={product.title} width="400" />
+            <div>
+                <h1>{product.title}</h1>
+                <h2>{product.description}</h2>
+                <h3>$ {product.price}</h3>
+                <h4>Stock: {product.stock}</h4>
+                <ItemCount stock={product.stock} initial={1} />
+            </div>
         </div>
-        <Link to="/cart">
-          <button>Finalizar compra</button>
-        </Link>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default ItemDetail;
