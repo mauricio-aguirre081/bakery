@@ -1,43 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getProd } from '../../mocks/FakeApi';
+//import { getProd } from '../../mocks/FakeApi';
 import ItemDetail from '../ItemDetail/ItemDetail';
+import { db } from "../../firebase/firebase";
+import { getDoc, collection, query, connectFirestoreEmulator } from "firebase/firestore";
 
 const ItemDetailContainer = () => {
     const [product, setProduct] = useState({});
     const [loading, setLoading] = useState(true);
 
-    const { id } = useParams();
+    const { productId } = useParams();
 
     useEffect(() => {
-        getProd(id)
-            .then((res) => {
-                setProduct(res);
+        const productsCollection = collection(db, 'productos');
+        const refDoc = doc(productsCollection, productId)
+        getDoc(refDoc).then(result => {
+            setProduct({
+                id: result.id,
+                ...result.data(),
             })
-            .catch((error) => {
-                console.log(error);
-            })
-            .finally(() => {
-                setLoading(false);
-            }); 
-    }, [id]);
+        })
+        .catch(err => console.log(err))
+        .finally(() => setLoaded(false))
+    }, [productId]);
 
-    //console.log(product);
     return (
-        <div>
-            {loading ? (
-                <h2>Cargando...</h2>
-            ) : (
-                <>
-                    <ItemDetail product={product} />
-                </>
-            )}
-        </div>
-    );
-};
+        <>
+            {loaded ? <CircularProgress color="success" /> : <ItemDetail product={product} />}
+        </>
+    )
+}
 
-export default ItemDetailContainer;
 
+export default ItemDetailsContainer
 
 
 // para una api fake
